@@ -1,0 +1,47 @@
+{
+  "name": "level-mount",
+  "version": "1.0.0",
+  "description": "Mount multiple leveldown compatible stores by key prefix onto a single store.",
+  "author": "Daniel J. B. Clarke <u8sand@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "public": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/u8sand/level-mount.git"
+  },
+  "bugs": {
+    "url": "https://github.com/u8sand/level-mount/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "prepublishOnly": "npm run compile && npm test",
+    "test": "mocha --opts .mocha.opts"
+  },
+  "dependencies": {
+    "abstract-leveldown": "^6.0.0",
+    "defined": "^1.0.0",
+    "encoding-down": "^5.0.4",
+    "heapq": "0.0.3",
+    "levelup": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/abstract-leveldown": "^5.0.1",
+    "@types/leveldown": "^4.0.0",
+    "@types/levelup": "^3.1.0",
+    "@types/memdown": "^3.0.0",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.15",
+    "level-option-wrap": "^1.1.0",
+    "leveldown": "^4.0.1",
+    "memdown": "^3.0.0",
+    "mocha": "^5.2.0",
+    "subleveldown": "^3.0.1",
+    "tape": "^4.9.1",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
+  }
+}

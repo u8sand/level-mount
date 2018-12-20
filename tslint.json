@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "tslint-recommended"
+  ],
+  "rules": {
+    "jsx-no-multiline-js": false,
+    "jsx-no-lambda": false
+  }
+}
