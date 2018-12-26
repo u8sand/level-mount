@@ -1,6 +1,6 @@
 {
   "name": "level-mount",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Mount multiple leveldown compatible stores by key prefix onto a single store.",
   "author": "Daniel J. B. Clarke <u8sand@gmail.com>",
   "license": "MIT",

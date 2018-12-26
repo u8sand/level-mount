@@ -44,7 +44,38 @@ export class LevelDOWNMount<K extends StringOrBuffer = string, V = any, O = any>
   }
 
   _open(options: O, callback: ErrorCallback) {
-    process.nextTick(callback)
+    Promise.all(
+      Object.values(this._mounts).map((mount) =>
+        new Promise((resolve, reject) => {
+          // TODO: get options passed through
+          mount.open((err) => {
+            if(err) reject(err)
+            else resolve()
+          })
+        })
+      )
+    ).then(
+      () => process.nextTick(callback)
+    ).catch(
+      (err) => callback(err)
+    )
+  }
+
+  _close(callback: ErrorCallback) {
+    Promise.all(
+      Object.values(this._mounts).map((mount) =>
+        new Promise((resolve, reject) => {
+          mount.close((err) => {
+            if (err) reject(err)
+            else resolve()
+          })
+        })
+      )
+    ).then(
+      () => process.nextTick(callback)
+    ).catch(
+      (err) => callback(err)
+    )
   }
 
   _get(key: K, options: AbstractGetOptions, callback: ErrorValueCallback<V>) {
