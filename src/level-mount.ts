@@ -171,8 +171,8 @@ export class LevelDOWNMount<K extends StringOrBuffer = string, V = any, O extend
   changes(): EasierLevelDOWNEmitter<K, V> {
     const newEmitter = new EasierLevelDOWNEmitter<K, V>()
     for (const {mount, db} of this._mounts) {
-      if (db._db !== undefined && db._db.changes !== undefined) {
-        db._db.changes().onPut(
+      if (db.changes !== undefined) {
+        db.changes().onPut(
           (key: K, value: V) =>
             newEmitter.emitPut(concat(mount as K, key), value)
         ).onDel(
