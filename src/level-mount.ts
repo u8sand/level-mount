@@ -1,6 +1,8 @@
 import { AbstractBatch, AbstractGetOptions, AbstractIterator, AbstractIteratorOptions, AbstractLevelDOWN, AbstractOptions, ErrorCallback, ErrorValueCallback } from 'abstract-leveldown'
 import { LevelDOWNMountIterator } from './level-mount-iterator'
 import { StringOrBuffer } from './types'
+import { EasierLevelDOWNEmitter, EasierLevelDOWNBatchOpts } from 'easier-abstract-leveldown'
+import { concat } from './util/concat';
 
 export type LevelDOWNMounts = Array<{
   mount: string,
@@ -162,5 +164,43 @@ export class LevelDOWNMount<K extends StringOrBuffer = string, V = any, O extend
 
   _iterator(options: AbstractIteratorOptions<K>): AbstractIterator<K, V> {
     return new LevelDOWNMountIterator(this, options)
+  }
+
+  // If the underlying store supports the EasierAbstractLevelDOWN changes
+  //  extension, we'll capture those changes and emit them on this store.
+  changes(): EasierLevelDOWNEmitter<K, V> {
+    const newEmitter = new EasierLevelDOWNEmitter<K, V>()
+    for (const {mount, db} of this._mounts) {
+      if (db._db !== undefined && db._db.changes !== undefined) {
+        db._db.changes().onPut(
+          (key: K, value: V) =>
+            newEmitter.emitPut(concat(mount as K, key), value)
+        ).onDel(
+          (key: K) =>
+            newEmitter.emitDel(concat(mount as K, key))
+        ).onBatch(
+          (array: EasierLevelDOWNBatchOpts<K, V>) =>
+            newEmitter.emitBatch(
+              array.map((op) => {
+                if (op.type === 'put') {
+                  return {
+                    type: op.type,
+                    key: concat(mount as K, op.key),
+                    value: op.value,
+                  }
+                } else if (op.type === 'del') {
+                  return {
+                    type: op.type,
+                    key: concat(mount as K, op.key),
+                  }
+                } else
+                  throw new Error(`Unrecognized batch operation '${(op as { type: string }).type}'`)
+              })
+            )
+        )
+      }
+    }
+
+    return newEmitter
   }
 }
