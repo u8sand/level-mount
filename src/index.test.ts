@@ -1,5 +1,5 @@
 import memdown from 'memdown'
-import LevelMount from './index'
+import levelmount from '.'
 import { AbstractLevelDOWNTestSuite } from './tests/abstract-leveldown-test'
 import { CustomLevelDOWNTestSuite } from './tests/custom-leveldown-test'
 import { LevelMountTestSuite } from './tests/level-mount-test'
@@ -14,6 +14,7 @@ CustomLevelDOWNTestSuite(
   () => memdown(),
 )
 
+
 LevelMountTestSuite(
   'levelmount mount tests (memdown, memdown)',
   () => memdown(),
@@ -22,45 +23,76 @@ LevelMountTestSuite(
 
 CustomLevelDOWNTestSuite(
   'levelmount custom leveldown tests with no mounts',
-  () => LevelMount(
-    memdown(),
-    {}
-  )
+  () => levelmount({
+    db: memdown(),
+  })
 )
 
 CustomLevelDOWNTestSuite(
   'levelmount custom leveldown tests with mount on a*',
-  () => LevelMount(
-    memdown(),
-    {
-      'a': memdown(),
-    }
-  )
+  () => levelmount({
+    db: memdown(),
+    mounts: [
+      {
+        mount: 'a',
+        db: memdown(),
+      }
+    ],
+  })
 )
 
 AbstractLevelDOWNTestSuite(
   'levelmount leveldown tests with no mounts',
-  () => LevelMount(
-    memdown(),
-    {}
-  )
+  () => levelmount({
+    db: memdown()
+  })
 )
 
 AbstractLevelDOWNTestSuite(
   'levelmount leveldown tests with mount on 0*-9*',
-  () => LevelMount(
-    memdown(),
-    {
-      '0': memdown(),
-      '1': memdown(),
-      '2': memdown(),
-      '3': memdown(),
-      '4': memdown(),
-      '5': memdown(),
-      '6': memdown(),
-      '7': memdown(),
-      '8': memdown(),
-      '9': memdown(),
-    }
-  )
+  () => levelmount({
+    db: memdown(),
+    mounts: [
+      {
+        mount: '0',
+        db: memdown(),
+      },
+      {
+        mount: '1',
+        db: memdown(),
+      },
+      {
+        mount: '2',
+        db: memdown(),
+      },
+      {
+        mount: '3',
+        db: memdown(),
+      },
+      {
+        mount: '4',
+        db: memdown(),
+      },
+      {
+        mount: '5',
+        db: memdown(),
+      },
+      {
+        mount: '6',
+        db: memdown(),
+      },
+      {
+        mount: '7',
+        db: memdown(),
+      },
+      {
+        mount: '8',
+        db: memdown(),
+      },
+      {
+        mount: '9',
+        db: memdown(),
+      },
+    ]
+  })
 )

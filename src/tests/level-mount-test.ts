@@ -2,7 +2,7 @@ import { AbstractLevelDOWN } from 'abstract-leveldown';
 import * as assert from 'assert';
 import levelup from 'levelup';
 import sub from 'subleveldown';
-import LevelMount from '../index';
+import levelmount, { LevelDOWNMount } from '..'
 import { reversePromise } from '../util/reverse-promise';
 import { streamPromise } from '../util/stream-promise';
 
@@ -27,7 +27,15 @@ export function LevelMountTestSuite<T extends AbstractLevelDOWN<any, any>>(
       const stores = await withEmptyStores()
       level_1 = levelup(stores.level_1)
       level_2 = levelup(stores.level_2)
-      db = levelup(LevelMount(stores.level_1, { '!mount!': stores.level_2 }))
+      db = levelup(levelmount({
+        db: stores.level_1,
+        mounts: [
+          {
+            mount: '!mount!',
+            db: stores.level_2,
+          },
+        ],
+      }))
       db_no_mount = sub(db, '!no_mount!', { separator: '!' })
       db_mount = sub(db, '!mount!', { separator: '!' })
 

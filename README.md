@@ -5,7 +5,21 @@ LevelMount, like file system directory mounts and somewhat like the opposite of 
 Can be used *with* subleveldown. Examples:
 
 ```js
-const hybrid_db = LevelMount(leveldown('root'), { '!tmp!': memdown(), '!var!': someotherdown() })
+const hybrid_db = levelup(levelmount({
+  db: leveldown('root'),
+  options: {}, // options for leveldown open
+  mounts: [
+    {
+      mount: '!tmp!',
+      db: memdown(),
+    },
+    {
+      mount: '!var!',
+      db: someotherdown(),
+      options: {}, // someotherdown options for leveldown open
+    }
+  ],
+})
 
 hybrid_db.put('hello', 'world') // ends up in root leveldown with key `hello`
 hybrid_db.put('!tmp!blah', 'bleh') // ends up in memdown with key `blah`

@@ -18,16 +18,14 @@ export class LevelDOWNMountIterator<K extends StringOrBuffer, V> extends Abstrac
     this.db = db
     this._options = normalize_options(options)
     this._test = test_from_options(this._options)
-    
+
     // Sorted mount locations
     const _test_prefix = test_prefix_from_options(this._options)
-    const _mounts = (Object.keys(db._mounts) as K[]).filter(
-      _test_prefix
-    )
+    const _mounts = db._mounts.filter(({mount}) => _test_prefix(mount))
 
     // Filter by mounts which could overlap with the iteration
     //  (the root mount and any mount which satisfies the range filter)
-    this._mounts = _mounts.map((mount) => {
+    this._mounts = _mounts.map(({db, mount}) => {
       let opts = {...this._options}
 
       if (mount !== '') {
@@ -50,8 +48,8 @@ export class LevelDOWNMountIterator<K extends StringOrBuffer, V> extends Abstrac
 
       return (
         {
-          mount: mount, 
-          iterator: db._mounts[mount].iterator(opts),
+          mount,
+          iterator: db.iterator(opts),
         }
       )
     })
