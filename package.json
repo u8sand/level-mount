@@ -1,6 +1,6 @@
 {
   "name": "level-mount",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Mount multiple leveldown compatible stores by key prefix onto a single store.",
   "author": "Daniel J. B. Clarke <u8sand@gmail.com>",
   "license": "MIT",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "abstract-leveldown": "^6.0.1",
-    "easier-abstract-leveldown": "^1.0.6",
+    "easier-abstract-leveldown": "^1.1.2",
     "heapq": "0.0.3",
     "ltgt": "^2.2.1"
   },
@@ -37,7 +37,7 @@
     "memdown": "^3.0.0",
     "mocha": "^5.2.0",
     "subleveldown": "^3.0.1",
-    "tape": "^4.9.1",
+    "tape": "^4.9.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.0",
     "typescript": "^3.2.2"
